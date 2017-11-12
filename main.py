@@ -1,24 +1,10 @@
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from sklearn.cluster import KMeans
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
-
-# plt.subplot(1, 3, 1)
-#     plt.plot(s.x)
-
-#     plt.subplot(1, 3, 2)
-#     plt.plot(s.y)
-
-#     plt.subplot(1, 3, 3)
-#     plt.plot(s.z)
-
-#     plt.tight_layout()
-#     plt.show()
 
 A = pd.read_csv('data/data.csv')
 
