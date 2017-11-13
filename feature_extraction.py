@@ -58,7 +58,8 @@ def extract():
     return pd.DataFrame(extracted_features)
 
 
-feature_vectors = extract()
+if __name__ == '__main__':
+    feature_vectors = extract()
 
-# write to file
-# feature_vectors.to_csv(os.path.join(data_dir, 'data.csv'))
+    # write to file
+    # feature_vectors.to_csv(os.path.join(data_dir, 'data.csv'))
