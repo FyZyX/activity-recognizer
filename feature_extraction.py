@@ -2,13 +2,21 @@ from visualize import visualize
 import numpy as np
 import pandas as pd
 import os
-from random import choices
 
 data_dir = 'data'
 
 
 def max_amplitude(z):
     return max(map(lambda x: np.absolute(x), np.fft.fft(z)))
+
+
+def amplitude_fraction(z):
+    amps = sorted(map(lambda x: np.absolute(x), np.fft.fft(z)), reverse=True)
+
+    def amp_to_percent(amp):
+        return round(100 * amp / amps[0], 2)
+
+    print('{}% of f_0'.format(max([amp_to_percent(amp) for amp in amps[1:10]])))
 
 
 def create_feature_vector(activity, df):
@@ -28,7 +36,7 @@ def extract():
     raw_dir = os.path.join(data_dir, 'raw')
     extracted_features = []
 
-    for data_file in [os.listdir(raw_dir)[0]]:  # choices(, k=1):
+    for data_file in os.listdir(raw_dir):
         print(data_file)
         df = pd.read_csv(os.path.join(raw_dir, data_file), index_col=0, names=['x', 'y', 'z', 'activity'])
         activities = df.groupby('activity')
@@ -39,7 +47,11 @@ def extract():
 
             activity_df = activity_df.drop('activity', axis=1)
 
-            visualize(activity_df)
+            # visualize(activity_df)
+
+            amplitude_fraction(activity_df.x)
+            amplitude_fraction(activity_df.y)
+            amplitude_fraction(activity_df.z)
 
             # extracted_features.append(create_feature_vector(activity, activity_df))
 
