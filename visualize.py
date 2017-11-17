@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+from os import system
+from sklearn.tree import export_graphviz
+
 
 def plot(axes, axis, values, c='chartreuse'):
     a = axes[axis]
@@ -19,3 +22,17 @@ def visualize(s):
 
     plt.tight_layout()
     plt.show()
+
+
+def generate_tree(tree, out_file='../proposal/tree'):
+    activities = [
+        'Working at Computer',
+        'Standing Up, Walking and Going up/down stairs',
+        'Standing',
+        'Walking',
+        'Going Up/Down Stairs',
+        'Walking and Talking with Someone',
+        'Talking while Standing',
+    ]
+    export_graphviz(tree, out_file="{}.dot".format(out_file), class_names=activities, rounded=True)
+    # system("dot -Tpng {0}.dot -o {0}.png".format(out_file))

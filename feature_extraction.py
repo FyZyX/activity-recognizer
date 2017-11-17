@@ -49,11 +49,11 @@ def extract():
 
             # visualize(activity_df)
 
-            amplitude_fraction(activity_df.x)
-            amplitude_fraction(activity_df.y)
-            amplitude_fraction(activity_df.z)
+            # amplitude_fraction(activity_df.x)
+            # amplitude_fraction(activity_df.y)
+            # amplitude_fraction(activity_df.z)
 
-            # extracted_features.append(create_feature_vector(activity, activity_df))
+            extracted_features.append(create_feature_vector(activity, activity_df))
 
     return pd.DataFrame(extracted_features)
 
