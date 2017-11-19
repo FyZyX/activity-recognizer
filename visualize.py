@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from os import system
+from os import path
 from sklearn.tree import export_graphviz
 
 
@@ -24,7 +24,7 @@ def visualize(s):
     plt.show()
 
 
-def generate_tree(tree, out_file='../proposal/tree'):
+def generate_tree(tree, out_file='tree'):
     activities = [
         'Working at Computer',
         'Standing Up, Walking and Going up/down stairs',
@@ -34,5 +34,6 @@ def generate_tree(tree, out_file='../proposal/tree'):
         'Walking and Talking with Someone',
         'Talking while Standing',
     ]
-    export_graphviz(tree, out_file="{}.dot".format(out_file), class_names=activities, rounded=True)
+    file_name = path.join('..', 'proposal', out_file)
+    export_graphviz(tree, out_file="{}.dot".format(file_name), class_names=activities, rounded=True)
     # system("dot -Tpng {0}.dot -o {0}.png".format(out_file))
