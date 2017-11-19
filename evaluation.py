@@ -1,4 +1,5 @@
 import pandas as pd
+from functools import reduce
 
 from classification import k_means, decision_tree
 from sklearn.utils import shuffle
@@ -30,19 +31,16 @@ def average_scores(clf, param_grid, metrics, runs=10):
 
         classifiers.append((classifier, classifier_gs))
 
-    accuracies = []
-    for classifier, classifier_gs in classifiers:
-        scores = {
-            'initial': [],
-            'final': []
-        }
-        for metric in metrics:
-            scores['initial'].append(metric(y_test, classifier.predict(x_test)))
-            scores['final'].append(metric(y_test, classifier_gs.predict(x_test)))
+    def predict(c, m):
+        return m(y_test, c.predict(x_test))
 
-        accuracies.append(scores)
+    scores = []
+    for metric in metrics:
+        scores.append([(predict(x, metric), predict(x_gs, metric)) for x, x_gs in classifiers])
 
-    return tuple(map(lambda x: sum(x) / len(x), accuracies.values()))
+    reduced_scores = [reduce(lambda x, y: (x[0] + y[0], x[1] + y[1]), score) for score in scores]
+
+    return [(x[0][0]/x[1], x[0][1]/x[1]) for x in zip(reduced_scores, map(len, scores))]
 
 
 def display_accuracy(clf_string, clf, metric=accuracy_score):
@@ -54,21 +52,19 @@ def display_accuracy(clf_string, clf, metric=accuracy_score):
             'min_samples_split': range(2, ceil(105 / 2)),
             'min_samples_leaf': range(1, 11)
         }
-    acc = average_scores(clf, param_grid, metric=metric)
-    if metric is accuracy_score:
-        metric_str = "Accuracy"
-        scores = tuple([round(100 * x, 2) for x in acc])
-        percent = "%"
-    else:
-        metric_str = "Fowlkes Mallows"
-        scores = tuple([round(x, 2) for x in acc])
-        percent = ""
+    scores = average_scores(clf, param_grid, metrics=[accuracy_score, fowlkes_mallows_score])
+    scores[0] = [round(100 * score, 2) for score in scores[0]]
+    scores[1] = [round(score, 2) for score in scores[1]]
 
-    length = len(clf_string) + len(metric_str)
+    length = len(clf_string)
     indent = " "*(45 - length)
-    print("{} {}:{}{}{}".format(clf_string, metric_str, indent, scores[0], percent))
+    print("{} Accuracy:{}{}%".format(clf_string, indent, scores[0][0]))
     indent = " " * (33 - length)
-    print("Grid Search {} {}:{}{}{}".format(clf_string, metric_str, indent, scores[1], percent))
+    print("Grid Search {} Accuracy:{}{}%".format(clf_string, indent, scores[0][1]))
+    indent = " " * (38 - length)
+    print("{} Fowlkes Mallows:{}{}".format(clf_string, indent, scores[1][0]))
+    indent = " " * (26 - length)
+    print("Grid Search {} Fowlkes Mallows:{}{}".format(clf_string, indent, scores[1][1]))
 
 
 def summarize_results():
