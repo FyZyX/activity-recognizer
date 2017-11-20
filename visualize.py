@@ -6,6 +6,9 @@ from sklearn.tree import export_graphviz
 
 
 def plot(axes, axis, values, c='chartreuse'):
+    """
+    Convenience method for graphing the acceleration graphs
+    """
     a = axes[axis]
     a.set_xlabel('time (s)')
     x = np.array(range(len(values))) / 1000
@@ -15,6 +18,9 @@ def plot(axes, axis, values, c='chartreuse'):
 
 
 def visualize(s):
+    """
+    Plots x, y, and z components of acceleration
+    """
     n = 3
     fig, ax = plt.subplots(1, n, sharex=True, sharey=True)
     for x, y in zip(range(n), [s.x, s.y, s.z]):
@@ -25,6 +31,9 @@ def visualize(s):
 
 
 def generate_tree(tree, out_file='tree'):
+    """
+    Creates graphical representation of decision tree
+    """
     activities = [
         'Working at Computer',
         'Standing Up, Walking and Going up/down stairs',
