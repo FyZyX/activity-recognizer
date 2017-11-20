@@ -37,7 +37,7 @@ def extract():
     extracted_features = []
 
     for data_file in os.listdir(raw_dir):
-        print(data_file)
+        # print(data_file)
         df = pd.read_csv(os.path.join(raw_dir, data_file), index_col=0, names=['x', 'y', 'z', 'activity'])
         activities = df.groupby('activity')
 
@@ -47,13 +47,16 @@ def extract():
 
             activity_df = activity_df.drop('activity', axis=1)
 
+            print("Activity", activity)
+            print(activity_df.describe())
+
             # visualize(activity_df)
 
             # amplitude_fraction(activity_df.x)
             # amplitude_fraction(activity_df.y)
             # amplitude_fraction(activity_df.z)
 
-            extracted_features.append(create_feature_vector(activity, activity_df))
+            # extracted_features.append(create_feature_vector(activity, activity_df))
 
     return pd.DataFrame(extracted_features)
 

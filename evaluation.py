@@ -72,9 +72,7 @@ def summarize_results():
     alg_2 = "Decision Tree"
 
     display_accuracy(alg_1, k_means)
-    display_accuracy(alg_1, k_means, metric=fowlkes_mallows_score)
 
     print()
 
     display_accuracy(alg_2, decision_tree)
-    display_accuracy(alg_2, decision_tree, metric=fowlkes_mallows_score)
