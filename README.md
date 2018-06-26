@@ -54,7 +54,7 @@ Run the program
 - `sklearn`
 - `graphviz`
 
-### Test the Code
+### Run the Code
 To see the results of this analysis, run the following from a command prompt:
 
 `python main.py`
